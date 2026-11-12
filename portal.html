@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitFlow — สำหรับสมาชิก</title>
+<link rel="stylesheet" href="style.css">
+<style>
+[hidden]{display:none!important}
+body{background:var(--bg)}
+/* ---------- auth ---------- */
+.auth-wrap{min-height:100vh;display:grid;place-items:center;padding:28px 16px;background:linear-gradient(160deg,#112e2b 0,#1b4a42 38%,var(--bg) 38%)}
+.auth-card{width:min(560px,100%);background:#fff;border-radius:22px;box-shadow:0 25px 80px #071d1c33;overflow:hidden}
+.auth-head{padding:28px 32px 0}
+.auth-head .brand{padding:0 0 16px;color:var(--ink)}
+.auth-head .brand small{color:#8aa39d}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#eef3f1;border-radius:12px;padding:5px;margin:4px 0 4px}
+.tabs button{border:0;background:transparent;border-radius:9px;padding:10px;font-weight:700;color:#5d7a73}
+.tabs button.on{background:#fff;color:var(--teal-dark);box-shadow:0 2px 8px #1e4a4018}
+.auth-form{padding:20px 32px 30px}
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 20px;padding:0;border:0}
+.roles legend{font-size:12px;font-weight:700;color:#415b56;margin-bottom:9px;padding:0}
+.role{position:relative}
+.role input{position:absolute;opacity:0;inset:0;cursor:pointer;margin:0;width:100%;height:100%}
+.role span{display:block;border:1.5px solid #dfe7e6;border-radius:14px;padding:14px 16px;transition:.15s}
+.role strong{display:block;font-size:15px;margin-bottom:3px}
+.role small{color:#8a9a97;font-size:11px;line-height:1.5}
+.role input:checked+span{border-color:var(--teal);background:var(--soft)}
+.role input:focus-visible+span{outline:2px solid #bbe6db}
+.field .err{font-size:11px;color:#c0434b}
+.field input.bad,.field select.bad{border-color:var(--red)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.submit{width:100%;margin-top:20px;padding:14px}
+.msg{margin-top:14px;padding:12px 14px;border-radius:11px;font-size:13px;line-height:1.6;background:#fdebea;color:#b8434b}
+/* ---------- portal ---------- */
+.p-top{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.p-bar{max-width:1100px;margin:auto;display:flex;align-items:center;gap:14px;padding:12px 20px;flex-wrap:wrap}
+.p-bar .brand{padding:0;margin-right:auto}
+.p-bar .brand-icon{width:34px;height:34px;font-size:22px;border-radius:11px}
+.p-bar .brand strong{font-size:19px}
+.who{font-size:13px;color:#4c6761;text-align:right;line-height:1.4}
+.who b{display:block;color:var(--ink)}
+.p-nav{max-width:1100px;margin:auto;display:flex;gap:4px;padding:0 14px;overflow-x:auto}
+.p-nav button{border:0;background:none;padding:13px 16px;font-weight:700;color:#7b8f8b;border-bottom:3px solid transparent;white-space:nowrap}
+.p-nav button.on{color:var(--teal-dark);border-color:var(--teal)}
+.p-wrap{max-width:1100px;margin:auto;padding:26px 20px 70px}
+.p-wrap h1{font-size:24px;letter-spacing:-.6px;margin:0 0 4px}
+.p-wrap .sub{color:#819092;margin:0 0 22px}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:22px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:20px 22px}
+.card h3{margin:0 0 10px;font-size:12px;color:#7b908c;letter-spacing:.3px}
+.card .big{font-size:24px;font-weight:800;letter-spacing:-.8px}
+.card p{margin:6px 0 0;font-size:12px;color:#8b999b;line-height:1.6}
+.banner{padding:14px 18px;border-radius:12px;margin-bottom:20px;font-size:13px;line-height:1.7}
+.banner.warn{background:#fff6e3;color:#8a5f10;border:1px solid #f3dfae}
+.banner.ok{background:#eaf7f2;color:#2f7a60;border:1px solid #cfe9dd}
+.pays{display:flex;gap:6px;flex-wrap:wrap}
+.paybox{background:#f5faf7;border:1px dashed #b9dccf;border-radius:12px;padding:14px 16px;font-size:13px;line-height:1.9;margin-top:4px}
+.slip-prev{max-width:100%;max-height:240px;border-radius:10px;border:1px solid var(--line);margin-top:8px;display:block}
+.small{font-size:12px;color:#7d8f8b}
+.row-act{display:flex;gap:6px;flex-wrap:wrap}
+.btn.sm{padding:8px 12px;font-size:12px}
+@media(max-width:800px){.cards{grid-template-columns:1fr}.plans-grid{grid-template-columns:1fr}}
+@media(max-width:520px){.auth-head,.auth-form{padding-left:20px;padding-right:20px}.roles{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.who{text-align:left}}
+</style>
+</head>
+<body>
+
+<!-- ===== login / register ===== -->
+<div class="auth-wrap" id="authView" hidden>
+  <div class="auth-card">
+    <div class="auth-head">
+      <div class="brand"><div class="brand-icon">✳</div><div><strong>FitFlow</strong><small>MEMBERSHIP SYSTEM</small></div></div>
+      <div class="tabs" role="tablist"><button type="button" id="tabLogin" class="on">เข้าสู่ระบบ</button><button type="button" id="tabReg">สมัครใช้งาน</button></div>
+    </div>
+
+    <form class="auth-form" id="loginForm" novalidate>
+      <div class="form-grid">
+        <div class="field full"><label for="l_email">อีเมล</label><input id="l_email" name="email" type="email" autocomplete="username" inputmode="email"><div class="err" data-err="l_email"></div></div>
+        <div class="field full"><label for="l_password">รหัสผ่าน</label><input id="l_password" name="password" type="password" autocomplete="current-password"><div class="err" data-err="l_password"></div></div>
+      </div>
+      <button class="btn btn-primary submit" type="submit">เข้าสู่ระบบ</button>
+      <div class="msg" id="loginMsg" role="alert" hidden></div>
+      <p class="small" style="margin:16px 0 0;text-align:center">ยังไม่มีบัญชี? กด “สมัครใช้งาน” ด้านบน · ลืมรหัสผ่านให้ติดต่อเจ้าหน้าที่</p>
+    </form>
+
+    <form class="auth-form" id="regForm" novalidate hidden>
+      <fieldset class="roles">
+        <legend>คุณต้องการสมัครเป็น</legend>
+        <label class="role"><input type="radio" name="role" value="member" checked><span><strong>ผู้ใช้</strong><small>สมาชิกที่สมัครแพ็กเกจและจองคลาส</small></span></label>
+        <label class="role"><input type="radio" name="role" value="trainer"><span><strong>เทรนเนอร์</strong><small>สร้างคลาสเอง รอแอดมินอนุมัติ</small></span></label>
+      </fieldset>
+      <div class="form-grid">
+        <div class="field"><label for="first_name">ชื่อ</label><input id="first_name" name="first_name" type="text" maxlength="100" autocomplete="given-name" data-kind="name"><div class="err" data-err="first_name"></div></div>
+        <div class="field"><label for="last_name">นามสกุล</label><input id="last_name" name="last_name" type="text" maxlength="100" autocomplete="family-name" data-kind="name"><div class="err" data-err="last_name"></div></div>
+        <div class="field"><label for="email">อีเมล (ใช้เข้าสู่ระบบ)</label><input id="email" name="email" type="email" maxlength="150" autocomplete="email" inputmode="email"><div class="err" data-err="email"></div></div>
+        <div class="field"><label for="phone">เบอร์โทรศัพท์</label><input id="phone" name="phone" type="tel" inputmode="numeric" maxlength="10" placeholder="0812345678" autocomplete="tel" data-kind="digits"><div class="small">ตัวเลข 9-10 หลัก ขึ้นต้นด้วย 0</div><div class="err" data-err="phone"></div></div>
+        <div class="field" data-for="member"><label for="date_of_birth">วันเกิด</label><input id="date_of_birth" name="date_of_birth" type="date" min="1900-01-01"><div class="err" data-err="date_of_birth"></div></div>
+        <div class="field"><label for="password">รหัสผ่าน</label><input id="password" name="password" type="password" autocomplete="new-password" maxlength="64"><div class="small">8 ตัวขึ้นไป มีตัวอักษรและตัวเลข</div><div class="err" data-err="password"></div></div>
+        <div class="field"><label for="password2">ยืนยันรหัสผ่าน</label><input id="password2" name="password2" type="password" autocomplete="new-password" maxlength="64"><div class="err" data-err="password2"></div></div>
+      </div>
+      <div class="hp" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+      <button class="btn btn-primary submit" type="submit">สมัครใช้งาน</button>
+      <div class="msg" id="regMsg" role="alert" hidden></div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== signed in ===== -->
+<div id="appView" hidden>
+  <header class="p-top">
+    <div class="p-bar">
+      <div class="brand"><div class="brand-icon">✳</div><div><strong>FitFlow</strong><small>MEMBERSHIP SYSTEM</small></div></div>
+      <div class="who"><b id="whoName"></b><span id="whoRole"></span></div>
+      <button class="btn btn-secondary sm" id="pwBtn" type="button">เปลี่ยนรหัสผ่าน</button>
+      <button class="btn btn-secondary sm" id="logoutBtn" type="button">ออกจากระบบ</button>
+    </div>
+    <nav class="p-nav" id="pNav"></nav>
+  </header>
+  <main class="p-wrap" id="pContent" aria-live="polite"></main>
+</div>
+
+<div id="modalRoot"></div><div id="toast" role="status" aria-live="polite"></div>
+<script src="config.js"></script>
+<script src="portal.js"></script>
+</body>
+</html>

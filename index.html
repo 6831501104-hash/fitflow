@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitFlow — Fitness Membership Management</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><div class="brand-icon">✳</div><div><strong>FitFlow</strong><small>MEMBERSHIP SYSTEM</small></div></div>
+    <p class="nav-label">WORKSPACE</p>
+    <nav id="nav">
+      <button data-page="dashboard" class="nav-item active"><span class="nav-icon">◫</span> ภาพรวม <small>Dashboard</small></button>
+      <button data-page="members" class="nav-item"><span class="nav-icon">♙</span> สมาชิก <small>Members</small></button>
+      <button data-page="subscriptions" class="nav-item"><span class="nav-icon">▤</span> แพ็กเกจที่สมัคร <small>Subscriptions</small></button>
+      <button data-page="payments" class="nav-item"><span class="nav-icon">◈</span> การชำระเงิน <small>Payments</small></button>
+      <button data-page="checkins" class="nav-item"><span class="nav-icon">↪</span> เข้าใช้บริการ <small>Check-ins</small></button>
+      <button data-page="classes" class="nav-item"><span class="nav-icon">▦</span> คลาสออกกำลังกาย <small>Classes</small></button>
+      <button data-page="bookings" class="nav-item"><span class="nav-icon">▣</span> การจองคลาส <small>Bookings</small></button>
+      <button data-page="plans" class="nav-item"><span class="nav-icon">◇</span> แพ็กเกจ <small>Plans</small></button>
+      <button data-page="trainers" class="nav-item"><span class="nav-icon">♞</span> เทรนเนอร์ <small>Trainers</small></button>
+    </nav>
+    <div class="side-bottom"><div class="demo-chip"><span class="pulse"></span> <span id="syncChip">DEMO MODE · LOCALSTORAGE</span></div><p id="syncNote">สาธิตบนเครื่องของคุณ ข้อมูลไม่ส่งออกไปยังเซิร์ฟเวอร์</p><a href="portal.html" target="_blank" rel="noopener" class="text-button" style="display:block;margin-bottom:6px">↗ หน้าสมาชิก (ลิงก์ให้ผู้ใช้)</a><button id="adminLogout" class="text-button" style="display:block;margin-bottom:6px">⎋ ออกจากระบบแอดมิน</button><button id="resetData" class="text-button">↺ คืนค่าข้อมูลตัวอย่าง</button></div>
+  </aside>
+  <div class="overlay" id="overlay"></div>
+  <main class="main">
+    <header class="topbar"><button class="mobile-menu icon-button" id="toggleMenu" aria-label="เปิดเมนู">☰</button><div class="breadcrumbs">Workspace <span>/</span> <strong id="breadcrumb">Dashboard</strong></div><div class="top-actions"><span class="today" id="today"></span><span class="admin-avatar">AD</span></div></header>
+    <div class="content" id="content" aria-live="polite"></div>
+  </main>
+</div>
+<div class="login-layer" id="loginLayer" hidden>
+  <form class="login-box" id="adminLogin">
+    <div class="brand" style="padding:0 0 16px"><div class="brand-icon">✳</div><div><strong style="color:#192d30">FitFlow</strong><small>ADMIN</small></div></div>
+    <h2 style="margin:0 0 6px;font-size:20px">เข้าสู่ระบบผู้ดูแล</h2>
+    <p class="muted" style="margin:0 0 16px;font-size:12px;line-height:1.7">หน้านี้สำหรับเจ้าหน้าที่เท่านั้น สมาชิกให้ใช้หน้า portal.html</p>
+    <div class="field"><label for="adminPw">รหัสผ่านผู้ดูแล</label><input id="adminPw" type="password" autocomplete="current-password" required></div>
+    <button class="btn btn-primary" style="width:100%;margin-top:16px;padding:13px" type="submit">เข้าสู่ระบบ</button>
+    <div id="adminMsg" role="alert" style="color:#b8434b;font-size:13px;margin-top:12px;min-height:18px"></div>
+  </form>
+</div>
+<div id="modalRoot"></div><div id="toast" role="status" aria-live="polite"></div>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
